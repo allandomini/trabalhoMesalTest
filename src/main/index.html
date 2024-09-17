@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Test</title>
+    <script>
+      async function votar() {
+        const eleitor = document.getElementById("eleitor").value;
+        const prefeito = document.getElementById("prefeito").value;
+        const vereador = document.getElementById("vereador").value;
+
+        const response = await fetch("http://localhost:8080/votos/votar", {
+          // Atualize a URL aqui
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            eleitor: { id: eleitor },
+            prefeito: { id: prefeito },
+            vereador: { id: vereador },
+          }),
+        });
+
+        const result = await response.json();
+        console.log(result);
+      }
+
+      async function apuracao() {
+        const response = await fetch("/votos/apuracao");
+        const result = await response.json();
+        console.log(result);
+      }
+
+      async function saveCandidato() {
+        const candidato = {
+          name: document.getElementById("candidatoName").value,
+          cpf: document.getElementById("candidatoCpf").value,
+          email: document.getElementById("candidatoEmail").value,
+          numeroCandidato: document.getElementById("candidatoNumero").value,
+          funcao: document.getElementById("candidatoFuncao").value,
+          status: "ATIVO",
+        };
+
+        const response = await fetch("http://localhost:8080/candidatos/save", {
+          // Atualize a URL aqui
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(candidato),
+        });
+
+        const result = await response.json();
+        console.log(result);
+      }
+
+      async function saveEleitor() {
+        const eleitor = {
+          name: document.getElementById("eleitorName").value,
+          cpf: document.getElementById("eleitorCpf").value,
+          email: document.getElementById("eleitorEmail").value,
+          password: document.getElementById("eleitorPassword").value,
+          phone: document.getElementById("eleitorPhone").value,
+          address: document.getElementById("eleitorAddress").value,
+          city: document.getElementById("eleitorCity").value,
+          state: document.getElementById("eleitorState").value,
+          zipCode: document.getElementById("eleitorZipCode").value,
+        };
+
+        const response = await fetch("http://localhost:8080/eleitores/save", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(eleitor),
+        });
+
+        const result = await response.json();
+        console.log(result);
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Testar API</h1>
+
+    <h2>Votar</h2>
+    <input type="text" id="eleitor" placeholder="ID do Eleitor" />
+    <input type="text" id="prefeito" placeholder="ID do Prefeito" />
+    <input type="text" id="vereador" placeholder="ID do Vereador" />
+    <button onclick="votar()">Votar</button>
+
+    <h2>Apuração</h2>
+    <button onclick="apuracao()">Realizar Apuração</button>
+
+    <h2>Salvar Candidato</h2>
+    <input type="text" id="candidatoName" placeholder="Nome" />
+    <input type="text" id="candidatoCpf" placeholder="CPF" />
+    <input type="text" id="candidatoEmail" placeholder="Email" />
+    <input type="text" id="candidatoNumero" placeholder="Número do Candidato" />
+    <input
+      type="text"
+      id="candidatoFuncao"
+      placeholder="Função (1=Prefeito, 2=Vereador)"
+    />
+    <button onclick="saveCandidato()">Salvar Candidato</button>
+
+    <h2>Salvar Eleitor</h2>
+    <input type="text" id="eleitorName" placeholder="Nome" />
+    <input type="text" id="eleitorCpf" placeholder="CPF" />
+    <input type="text" id="eleitorEmail" placeholder="Email" />
+    <input type="text" id="eleitorPassword" placeholder="Senha" />
+    <input type="text" id="eleitorPhone" placeholder="Telefone" />
+    <input type="text" id="eleitorAddress" placeholder="Endereço" />
+    <input type="text" id="eleitorCity" placeholder="Cidade" />
+    <input type="text" id="eleitorState" placeholder="Estado" />
+    <input type="text" id="eleitorZipCode" placeholder="CEP" />
+    <button onclick="saveEleitor()">Salvar Eleitor</button>
+  </body>
+</html>
